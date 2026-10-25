@@ -1,0 +1,40 @@
+# Project Development Report
+
+## 1. Overview
+
+This project is a simple **FastAPI + HTML** web app that lets a user upload a plant‑leaf image, sends the image to an LLM for analysis, and displays the generated diagnosis. The back‑end is written in Python, the front‑end is vanilla HTML/JS, and the AI calls are performed via the **OpenAI API** (text + vision models).
+
+## 2. Stack & Core Technologies
+
+| Layer | Technology | Reason |
+|-------|------------|--------|
+| **Back‑end** | Python 3.11, **FastAPI**, **uvicorn** | Lightweight async web framework; easy to expose a single `/analyze` endpoint. |
+| | **python‑dotenv** | Loads the API key from a `.env` file without hard‑coding it. |
+| | **openai** SDK | Official client for OpenAI LLMs; supports both chat‑completion and vision calls. |
+| **Front‑end** | HTML + CSS + Vanilla JavaScript | No extra dependencies; runs in any modern browser. |
+| | **Fetch API** | Sends the image (as Base64) to the FastAPI endpoint. |
+| **AI Models** | `gpt‑4o‑mini` (text) | Cost‑effective model for plain‑text prompts. |
+| | `gpt‑4o` (vision) | Handles the image‑to‑text analysis. |
+
+## 3. File‑by‑File Summary
+
+- **`server.py`** – Starts a FastAPI app, loads the OpenAI key from `.env`, defines `/analyze` endpoint that forwards the request to `converter.analyze_input` and returns the model response.
+- **`converter.py`** – Contains `analyze_input(messages, image_base64)` which builds the appropriate prompt, calls OpenAI’s chat/completion (vision when an image is present) and returns the answer.
+- **`plant_disease_analyzer.html`** – Simple UI: file input, preview, and JavaScript that encodes the selected image to Base64, posts it to `/analyze`, and displays the answer.
+- **`.env`** – Stores `OPENAI_API_KEY=your‑key‑here` (never committed to source control).
+- **`requirements.txt`** – Lists `fastapi`, `uvicorn`, `python-dotenv`, `openai`.
+- **`README.md`** – Provides setup, run, and usage instructions.
+
+## 4. Security & Privacy
+
+- API key is read server‑side from `.env`; never exposed to the browser.
+- No user data is persisted; the image is only held in memory for the duration of the request.
+- CORS is limited to the local origin (default FastAPI settings).
+
+## 5. Deployment Notes
+
+- Run locally with `uvicorn server:app --reload`.
+- For production, use a process manager (e.g., Gunicorn with Uvicorn workers) behind a reverse proxy (NGINX) and set `OPENAI_API_KEY` as an environment variable.
+
+---
+*Generated on 2026‑10‑15.*

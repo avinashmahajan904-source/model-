@@ -1,0 +1,38 @@
+# Environment variables and secrets (CRITICAL: Never commit your real API keys!)
+.env
+.env.local
+*.env
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Local vector database storage (regenerated automatically on run)
+chroma_db/
+
+# Large model binaries and HuggingFace caches
+models--sentence-transformers--all-MiniLM-L6-v2/
+.cache/
+hf_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Log and temp files
+*.log
+scratch/
+test_chroma_db/
